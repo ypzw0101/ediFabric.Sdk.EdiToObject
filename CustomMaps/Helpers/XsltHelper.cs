@@ -54,5 +54,18 @@ namespace EdiFabric.Sdk.EdiToObject.CustomMaps.Helpers
             var serializer = new XmlSerializer(typeof(T), nameSpace);
             return (T)serializer.Deserialize(xml.CreateReader());
         }
+
+        public static XElement Serialize<T>(T instance, string ns)
+        {
+            var type = instance.GetType();
+
+            var serializer = new XmlSerializer(type, ns);
+            using (var ms = new MemoryStream())
+            {
+                serializer.Serialize(ms, instance);
+                ms.Position = 0;
+                return XElement.Load(ms, LoadOptions.None);
+            }
+        }
     }
 }
