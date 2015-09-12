@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EdiFabric.Definitions.X12_002040_810;
 using EdiFabric.Sdk.EdiToObject.CustomClasses.X12;
+using EdiFabric.Sdk.EdiToObject.CustomMaps.Helpers;
 
 namespace EdiFabric.Sdk.EdiToObject.CustomMaps.Automapper
 {
@@ -24,7 +25,8 @@ namespace EdiFabric.Sdk.EdiToObject.CustomMaps.Automapper
                 cfg.CreateMap<Definitions.X12_002040_810.S_CTT, CustomClasses.X12.S_CTT>();
                 cfg.CreateMap<Definitions.X12_002040_810.S_CUR, CustomClasses.X12.S_CUR>();
                 cfg.CreateMap<Definitions.X12_002040_810.S_CUR_2, CustomClasses.X12.S_CUR_2>();
-                cfg.CreateMap<Definitions.X12_002040_810.S_DTM, CustomClasses.X12.S_DTM>();
+                cfg.CreateMap<Definitions.X12_002040_810.S_DTM, CustomClasses.X12.S_DTM>()
+                    .ForMember(m => m.D_374_1, opt => opt.ResolveUsing<CustomResolver>());
                 cfg.CreateMap<Definitions.X12_002040_810.S_DTM_2, CustomClasses.X12.S_DTM_2>();
                 cfg.CreateMap<Definitions.X12_002040_810.S_FOB, CustomClasses.X12.S_FOB>();
                 cfg.CreateMap<Definitions.X12_002040_810.S_ISS, CustomClasses.X12.S_ISS>();
@@ -75,6 +77,15 @@ namespace EdiFabric.Sdk.EdiToObject.CustomMaps.Automapper
                 cfg.CreateMap<Definitions.X12_002040_810.S_TXI_3, CustomClasses.X12.S_TXI_3>();
                 cfg.CreateMap<Definitions.X12_002040_810.S_TXI_4, CustomClasses.X12.S_TXI_4>();                
             });
+        }
+    }
+
+    // Converting an Enum to string
+    public class CustomResolver : ValueResolver<Definitions.X12_002040_810.S_DTM, string>
+    {
+        protected override string ResolveCore(Definitions.X12_002040_810.S_DTM source)
+        {
+            return source.D_374_1.GetXmlEnumAttributeValueFromEnum();
         }
     }
 }

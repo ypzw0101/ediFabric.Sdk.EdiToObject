@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using AutoMapper;
 using EdiFabric.Sdk.EdiToObject.CustomMaps.Automapper;
 
@@ -45,6 +48,19 @@ namespace EdiFabric.Sdk.EdiToObject.CustomMaps.Helpers
             var result = XslHelper.Deserialize<CustomClasses.Edifact.CustomInvoic>(mapped, "customedifact");
 
             return result;
+        }
+
+        public static string GetXmlEnumAttributeValueFromEnum<TEnum>(this TEnum value) where TEnum : struct, IConvertible
+        {
+            var enumType = typeof(TEnum);
+            if (!enumType.IsEnum) return null;//or string.Empty, or throw exception
+
+            var member = enumType.GetMember(value.ToString(CultureInfo.InvariantCulture)).FirstOrDefault();
+            if (member == null) return null;//or string.Empty, or throw exception
+
+            var attribute = member.GetCustomAttributes(false).OfType<XmlEnumAttribute>().FirstOrDefault();
+            if (attribute == null) return null;//or string.Empty, or throw exception
+            return attribute.Name;
         }
     }
 }

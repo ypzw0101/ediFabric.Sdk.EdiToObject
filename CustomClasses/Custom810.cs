@@ -4661,7 +4661,7 @@ namespace EdiFabric.Sdk.EdiToObject.CustomClasses.X12
     public partial class S_DTM
     {
 
-        private X12_ID_374 d_374_1Field;
+        private string d_374_1Field;
 
         private string d_373_2Field;
 
@@ -4672,7 +4672,7 @@ namespace EdiFabric.Sdk.EdiToObject.CustomClasses.X12
         private bool d_623_4FieldSpecified;
 
         [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
-        public X12_ID_374 D_374_1
+        public string D_374_1
         {
             get
             {
